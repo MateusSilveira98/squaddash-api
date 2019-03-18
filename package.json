@@ -1,0 +1,29 @@
+{
+  "name": "squaddash-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "start": "tsc && nodemon ./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MateusSilveira98/squaddash-api.git"
+  },
+  "author": "Mateus Costa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MateusSilveira98/squaddash-api/issues"
+  },
+  "homepage": "https://github.com/MateusSilveira98/squaddash-api#readme",
+  "dependencies": {
+    "@types/express": "^4.16.1",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "nodemon": "^1.18.10",
+    "typescript": "^3.3.3333"
+  }
+}

@@ -11,19 +11,22 @@
     "type": "git",
     "url": "git+https://github.com/MateusSilveira98/squaddash-api.git"
   },
-  "author": "Mateus da Silveira Costa",
+  "author": "Mateus da Silveira COsta",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MateusSilveira98/squaddash-api/issues"
   },
   "homepage": "https://github.com/MateusSilveira98/squaddash-api#readme",
   "dependencies": {
+    "bookshelf": "^0.14.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "http": "0.0.0",
-    "knex": "^0.16.3",
+    "knex": "^0.13.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "nodemon": "^1.18.11"
+    "nodemon": "^1.18.11",
+    "pg": "^7.10.0",
+    "sqlite3": "^4.0.6"
   }
 }

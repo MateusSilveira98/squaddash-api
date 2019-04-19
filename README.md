@@ -4,8 +4,7 @@
 
 ## Stacks
  * Node 10.6.0
- * Bookshelf ORM
- * knex@0.13
+ * Knex
 
 ## Scripts
  * npm start - to start api

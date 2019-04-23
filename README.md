@@ -9,5 +9,3 @@
 ## Scripts
  * npm start - to start api
  * npm i -  to install dependences
- * npm run test - to test tasks
- * npm run build - to build for production

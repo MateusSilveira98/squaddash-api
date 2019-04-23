@@ -2,7 +2,6 @@ const EmployeeRepository = require('./Employee.repository');
 const moment = require('moment');
 module.exports = {
   async create(employee) {
-    employee.cost = 0.0;
     employee.status = true;
     employee.deleted = false;
     employee.created_at = employee.updated_at = moment(Date.now()).format('YYYY-MM-DD');

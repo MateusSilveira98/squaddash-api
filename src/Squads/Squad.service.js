@@ -1,5 +1,6 @@
 const SquadRepository = require('./Squad.repository');
 const moment = require('moment');
+
 module.exports = {
   async create(squad) {
     squad.cost = 0.0;
@@ -15,10 +16,18 @@ module.exports = {
     return {id: result[0]}
   },
   async getAll() {
-    return await SquadRepository.getAll();
+    const employees = await SquadRepository.getEmployeesFromSquads();
+    let squads = await SquadRepository.getAll();
+    return squads.map(squad => {
+      squad.employees = employees.filter(employee => employee.squad_id == squad.id);
+      return squad
+    });
   },
   async getById(id) {
-    const squad = await SquadRepository.getById(id);
-    return squad[0];
+    const employees = await SquadRepository.getEmployeesFromSquads();
+    let squad = await SquadRepository.getById(id);
+    squad = squad[0];
+    squad.employees = employees.filter(employee => employee.squad_id == squad.id);
+    return squad;
   }
 }

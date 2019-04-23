@@ -3,14 +3,16 @@ const knex = require('knex')(knexConfig);
 module.exports = {
   async create(client) {
     try {
-      return await knex('clients').returning('id').insert(client);
+      let result = await knex('clients').returning('id').insert(client);
+      return result;
     } catch(error) {
       return await {error};
     }
   },
   async edit(client) {
     try {
-      return await knex('clients').returning('id').where('id', client.id).update(client);
+      let result = await knex('clients').returning('id').where('id', client.id).update(client);
+      return result;
     } catch(error) {
       return await {error};
     }

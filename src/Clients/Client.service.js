@@ -6,12 +6,12 @@ module.exports = {
     client.deleted = false;
     client.created_at = client.updated_at = moment(Date.now()).format('YYYY-MM-DD');
     const result = await ClientRepository.create(client);
-    return {id: result[0]}
+    return result
   },
   async edit(client) {
     client.updated_at = moment(Date.now()).format('YYYY-MM-DD');
     const result = await ClientRepository.edit(client);
-    return {id: result[0]}
+    return result
   },
   async getAll() {
     return await ClientRepository.getAll();

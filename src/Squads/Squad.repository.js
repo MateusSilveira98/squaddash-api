@@ -3,7 +3,8 @@ const knex = require('knex')(knexConfig);
 module.exports = {
   async create(squad) {
     try {
-      return await knex('squads').returning('id').insert(squad);
+      let result = await knex('squads').returning('id').insert(squad);
+      return result
     } catch (error) {
       return await { error };
     }

@@ -3,16 +3,16 @@ exports.up = (knex, Promise) => {
     if (!exists) {
       return knex.schema.createTable('users', (table) => {
         table.increments('id').primary();
-        table.string('name').nullable();
-        table.string('email').nullable();
-        table.string('profile_photo').nullable();
-        table.text('password').nullable();
-        table.integer('role_id').nullable();
-        table.foreign('role_id').references('id').inTable('roles');
+        table.string('name');
+        table.string('email');
+        table.string('profile_photo').defaultTo('https://res.cloudinary.com/mateus-costa/image/upload/v1556203484/wtt/sem-foto.jpg');
+        table.text('password');
+        table.integer('role_id');
+        table.foreign('role_id').references().inTable('roles');
         table.boolean('status').defaultTo(true);
         table.boolean('deleted').defaultTo(false);
         table.timestamp('created_at').defaultTo(knex.fn.now());
-        table.timestamp('updated_at').defaultTo(knex.fn.now());
+				table.timestamp('updated_at').defaultTo(knex.fn.now());
       });
     }
   });

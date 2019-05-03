@@ -3,31 +3,28 @@ const Callbacks = require('../_Helpers/Callbacks');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config.json');
-
 const create = async (param) => {
   try {
     const user = await UserRepository.getByEmail(param.email);
-    if (user) throw 'este email já está cadastrado! :(';
+    if (user) throw 'este email já está criado! :(';
     param.password = bcrypt.hashSync(param.password, 10);
     await UserRepository.create(param);
-    return Callbacks.callbackHandler('success', 'usuário cadastrado com sucesso! :)')
+    return Callbacks.callbackHandler('success', 'usuário criado com sucesso! :)')
   } catch (error) {
-    return Callbacks.callbackHandler('error', error || 'falha ao cadastrar o usuário! :(')
+    return Callbacks.callbackHandler('error', error || 'falha ao criar o usuário! :(')
   }
 }
 const edit = async (param) => {
   try {
     const user = await UserRepository.getById(param.id);
-    delete user.type;
     if(!user) throw 'usuário não encontrado! :(';
-    if (param.password) {
+    if (param.password)
       param.password = bcrypt.hashSync(param.password, 10);
-    }
     Object.assign(user, param);
     await UserRepository.edit(user);
-    return Callbacks.callbackHandler('success', 'usuário editado com sucesso! :)')
+    return Callbacks.callbackHandler('success', 'usuário alterado com sucesso! :)')
   } catch (error) {
-    return Callbacks.callbackHandler('error', error || 'falha ao editar o usuário! :(')
+    return Callbacks.callbackHandler('error', error || 'falha ao alterar o usuário! :(')
   }
 }
 const login = async (param) => {
@@ -54,14 +51,14 @@ const getById = async (id) => {
     if(!user) throw 'usuário não encontrado! :(';
     return user
   } catch (error) {
-    return Callbacks.callbackHandler('error', error)
+    return Callbacks.callbackHandler('error', error || 'falha ao buscar o usuário')
   }
 }
 const getAll = async (id) => {
   try {
     return await UserRepository.getAll(id);
   } catch(error) {
-    return Callbacks.callbackHandler('error', error)
+    return Callbacks.callbackHandler('error', error  || 'falha ao buscar os usuários')
   }
 }
 const getByIdToAuthenticate = async (id) => {

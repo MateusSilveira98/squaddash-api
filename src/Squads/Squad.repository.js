@@ -22,9 +22,9 @@ module.exports = {
       .where('id', id)
       .andWhere('deleted', false)
       .orderBy('name');
-    const employees = await knex('employees').where('deleted', false);
-    squad = squad[0];
-    squad.employees = employees.filter(employee => employee.squad_id == squad.id);
+      squad = squad[0];
+    const employees = await knex('employees').where('deleted', false).andWhere('squad_id', squad.id);
+    squad.employees = employees;
     return squad
   },
   async getByName(name) {

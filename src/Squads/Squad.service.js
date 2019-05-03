@@ -2,7 +2,9 @@ const SquadRepository = require('./Squad.repository');
 const Callbacks = require('../_Helpers/Callbacks');
 
 const mountSquadCost = (squad) => {
-  squad.cost = squad.employees.reduce((acumulator, current) => Number(acumulator.salary) + Number(current.salary));
+  squad.cost = squad.employees.length > 1 ? 
+    squad.employees.reduce((acumulator, current) => Number(acumulator.salary) + Number(current.salary)) :
+    Number(squad.employees[0].salary)
   return squad
 }
 module.exports = {

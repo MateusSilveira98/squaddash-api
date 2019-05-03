@@ -4,7 +4,7 @@ exports.up = (knex, Promise) => {
 			return knex.schema.createTable('employees', (table) => {
 				table.increments('id').primary();
 				table.string('name');
-				table.decimal('salary');
+				table.float('salary');
 				table.string('photo').defaultTo('https://res.cloudinary.com/mateus-costa/image/upload/v1556203484/wtt/sem-foto.jpg');
 				table.string('modality_of_contracting');
 				table.string('profession');

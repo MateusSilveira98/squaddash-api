@@ -4,7 +4,7 @@ exports.up = (knex, Promise) => {
       return knex.schema.createTable('projects', (table) => {
         table.increments('id').primary();
         table.string('name');
-        table.decimal('gains');
+        table.float('gains', 10, 2);
         table.timestamp('begin_date');
         table.timestamp('finish_date');
         table.integer('squad_id');

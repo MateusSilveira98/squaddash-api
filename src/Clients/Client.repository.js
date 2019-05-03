@@ -2,33 +2,21 @@ const knexConfig = require('../../knexfile').development;
 const knex = require('knex')(knexConfig);
 module.exports = {
   async create(client) {
-    try {
-      let result = await knex('clients').returning('id').insert(client);
-      return result;
-    } catch(error) {
-      return await {error};
-    }
+    return await knex('clients').insert(client);
   },
   async edit(client) {
-    try {
-      let result = await knex('clients').returning('id').where('id', client.id).update(client);
-      return result;
-    } catch(error) {
-      return await {error};
-    }
+    return await knex('clients').where('id', client.id).update(client);
   },
   async getAll() {
-    try {
-      return await knex('clients').where('deleted', false).orderBy('name');
-    } catch (error) {
-      return await {error};
-    }
+    const result = await knex('clients').where('deleted', false).orderBy('name');
+    return result[0]
   },
   async getById(id) {
-    try {
-      return await knex('clients').where('id', id).andWhere('deleted', false);
-    } catch (error) {
-      return await {error};
-    }
+    const result = await knex('clients').where('id', id).andWhere('deleted', false);
+    return result[0]
+  },
+  async getByName(name) {
+    const result = await knex('clients').where('name', name).andWhere('deleted', false);
+    return result[0]
   }
 }

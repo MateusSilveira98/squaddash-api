@@ -1,23 +1,42 @@
 const ClientRepository = require('./Client.repository');
-const moment = require('moment');
+const Callbacks = require('../_Helpers/Callbacks');
 module.exports = {
-  async create(client) {
-    client.status = true;
-    client.deleted = false;
-    client.created_at = client.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await ClientRepository.create(client);
-    return result
+  async create(param) {
+    try {
+      const client = await ClientRepository.getByName(param.name);
+      if (client) throw 'este client já está criado! :(';
+      await ClientRepository.create(param);
+      return Callbacks.callbackHandler('success', 'cliente criado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao criar o cliente! :(')
+    }
   },
-  async edit(client) {
-    client.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await ClientRepository.edit(client);
-    return result
+  async edit(param) {
+    try {
+      const client = await ClientRepository.getById(param.id);
+      if (!client) throw 'cliente não encontrado! :(';
+      delete client.employees;
+      Object.assign(client, param);
+      await ClientRepository.edit(client);
+      return Callbacks.callbackHandler('success', 'cliente alterado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao alterar o cliente! :(')
+    }
   },
   async getAll() {
-    return await ClientRepository.getAll();
+    try {
+      return await ClientRepository.getAll();
+    } catch(error) {
+      return Callbacks.callbackHandler('error', error  || 'falha ao buscar os clientes')
+    }
   },
   async getById(id) {
-    const client = await ClientRepository.getById(id);
-    return client[0];
+    try {
+      const client = await ClientRepository.getById(id);
+      if(!client) throw 'cliente não encontrado! :(';
+      return client
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao buscar o cliente')
+    }
   }
 }

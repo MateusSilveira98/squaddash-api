@@ -10,7 +10,6 @@ exports.up = (knex, Promise) => {
         table.boolean('status').defaultTo(true);
         table.boolean('deleted').defaultTo(false);
         table.timestamp('created_at').defaultTo(knex.fn.now());
-				table.timestamp('updated_at').defaultTo(knex.fn.now());
       });
     }
   });

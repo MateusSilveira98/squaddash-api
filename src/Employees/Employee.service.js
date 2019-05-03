@@ -1,24 +1,42 @@
 const EmployeeRepository = require('./Employee.repository');
-const moment = require('moment');
-
+const Callbacks = require('../_Helpers/Callbacks');
 module.exports = {
-  async create(employee) {
-    employee.status = true;
-    employee.deleted = false;
-    employee.created_at = employee.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await EmployeeRepository.create(employee);
-    return result;
+  async create(param) {
+    try {
+      const employee = await EmployeeRepository.getByName(param.name);
+      if (employee) throw 'este funcionário já está criado! :(';
+      await EmployeeRepository.create(param);
+      return Callbacks.callbackHandler('success', 'funcionário criado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao criar o funcionário! :(')
+    }
   },
-  async edit(employee) {
-    employee.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await EmployeeRepository.edit(employee);
-    return result
+  async edit(param) {
+    try {
+      const employee = await EmployeeRepository.getById(param.id);
+      if (!employee) throw 'funcionário não encontrado! :(';
+      delete employee.employees;
+      Object.assign(employee, param);
+      await EmployeeRepository.edit(employee);
+      return Callbacks.callbackHandler('success', 'funcionário alterado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao alterar o funcionário! :(')
+    }
   },
   async getAll() {
-    return await EmployeeRepository.getAll();
+    try {
+      return await EmployeeRepository.getAll();
+    } catch(error) {
+      return Callbacks.callbackHandler('error', error  || 'falha ao buscar os funcionários')
+    }
   },
   async getById(id) {
-    const employee = await EmployeeRepository.getById(id);
-    return employee[0];
+    try {
+      const employee = await EmployeeRepository.getById(id);
+      if(!employee) throw 'funcionário não encontrado! :(';
+      return employee
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao buscar o funcionário')
+    }
   }
 }

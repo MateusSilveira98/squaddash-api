@@ -34,6 +34,7 @@ const login = async (param) => {
     if (bcrypt.compareSync(param.password, user.password)) {
       const token = `Bearer ${jwt.sign({ sub: user.id }, config.secret)}`;
       delete user.password;
+      delete user.role_id;
       return {
         ...user,
         token

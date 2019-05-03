@@ -1,33 +1,49 @@
 const SquadRepository = require('./Squad.repository');
-const moment = require('moment');
+const Callbacks = require('../_Helpers/Callbacks');
 
+const mountSquadCost = (squad) => {
+  squad.cost = squad.employees.reduce((acumulator, current) => Number(acumulator.salary) + Number(current.salary));
+  return squad
+}
 module.exports = {
-  async create(squad) {
-    squad.status = true;
-    squad.deleted = false;
-    squad.created_at = squad.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await SquadRepository.create(squad);
-    return result
+  async create(param) {
+    try {
+      const squad = await SquadRepository.getByName(param.name);
+      if (squad) throw 'este squad já está criado! :(';
+      await SquadRepository.create(param);
+      return Callbacks.callbackHandler('success', 'squad criado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao criar o squad! :(')
+    }
   },
-  async edit(squad) {
-    squad.updated_at = moment(Date.now()).format('YYYY-MM-DD');
-    const result = await SquadRepository.edit(squad);
-    return result
+  async edit(param) {
+    try {
+      const squad = await SquadRepository.getById(param.id);
+      if (!squad) throw 'squad não encontrado! :(';
+      delete squad.employees;
+      Object.assign(squad, param);
+      await SquadRepository.edit(squad);
+      return Callbacks.callbackHandler('success', 'squad alterado com sucesso! :)')
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao alterar o squad! :(')
+    }
   },
   async getAll() {
-    const employees = await SquadRepository.getEmployeesFromSquads();
-    let squads = await SquadRepository.getAll();
-    return squads.length > 0 ? squads.map(squad => {
-      squad.employees = employees.filter(employee => employee.squad_id == squad.id);
-      squad.cost = squad.employees.reduce((acumulator, current) => Number(acumulator.salary) + Number(current.salary));
-      return squad
-    }) : [];
+    try {
+      let squads = await SquadRepository.getAll();
+      return squads.length > 0 ? squads.map(squad => {
+        return squad.employees.length > 0 ? mountSquadCost(squad) : squad;
+      }) : [];
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao buscar os squads')
+    }
   },
   async getById(id) {
-    const employees = await SquadRepository.getEmployeesFromSquads();
-    let squad = await SquadRepository.getById(id);
-    squad = squad[0];
-    squad.employees = employees.filter(employee => employee.squad_id == squad.id);
-    return squad;
+    try {
+      let squad = await SquadRepository.getById(id);
+      return squad.employees.length > 0 ? mountSquadCost(squad) : squad;
+    } catch (error) {
+      return Callbacks.callbackHandler('error', error || 'falha ao buscar o squad')
+    }
   }
 }

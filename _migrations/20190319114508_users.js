@@ -7,7 +7,7 @@ exports.up = (knex, Promise) => {
         table.string('email');
         table.string('profile_photo').defaultTo('https://res.cloudinary.com/mateus-costa/image/upload/v1556203484/wtt/sem-foto.jpg');
         table.text('password');
-        table.integer('role_id');
+        table.integer('role_id').defaultTo(2);
         table.foreign('role_id').references().inTable('roles');
         table.boolean('status').defaultTo(true);
         table.boolean('deleted').defaultTo(false);

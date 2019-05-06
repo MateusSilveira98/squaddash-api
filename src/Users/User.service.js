@@ -1,8 +1,8 @@
 const UserRepository = require('./User.repository');
 const Callbacks = require('../_Helpers/Callbacks');
+const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../config.json');
 const create = async (param) => {
   try {
     const user = await UserRepository.getByEmail(param.email);
@@ -49,6 +49,7 @@ const login = async (param) => {
 const getById = async (id) => {
   try {
     const user = await UserRepository.getById(id);
+    delete user.password;
     if(!user) throw 'usuário não encontrado! :(';
     return user
   } catch (error) {

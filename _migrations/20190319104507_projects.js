@@ -4,7 +4,7 @@ exports.up = (knex, Promise) => {
       return knex.schema.createTable('projects', (table) => {
         table.increments('id').primary();
         table.string('name');
-        table.float('gains', 10, 2);
+        table.decimal('gains', 10, 2);
         table.timestamp('begin_date');
         table.timestamp('finish_date');
         table.integer('squad_id');
@@ -14,6 +14,7 @@ exports.up = (knex, Promise) => {
         table.boolean('status').defaultTo(true);
         table.boolean('deleted').defaultTo(false);
         table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
       });
     }
   });

@@ -4,8 +4,8 @@ module.exports = {
     client: 'pg',
     connection: {
       host: 'localhost',
-      user: 'postgres',
-      password: '123456',
+      user: 'squaddash',
+      password: 'DEVsquaddash',
       database: 'squaddash_db'
     },
     migrations: {

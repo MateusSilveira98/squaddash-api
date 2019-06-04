@@ -11,11 +11,13 @@ const create = async (param) => {
     await UserRepository.create(param);
     return Callbacks.callbackHandler('success', 'usuário criado com sucesso! :)')
   } catch (error) {
+    console.log(error)
     return Callbacks.callbackHandler('error', error || 'falha ao criar o usuário! :(')
   }
 }
 const edit = async (param) => {
   try {
+    param.updated_at = Date.now();
     const user = await UserRepository.getById(param.id);
     if(!user) throw 'usuário não encontrado! :(';
     if (param.password)
@@ -34,8 +36,7 @@ const login = async (param) => {
     if (bcrypt.compareSync(param.password, user.password)) {
       const token = `Bearer ${jwt.sign({ sub: user.id }, config.secret)}`;
       delete user.password;
-      delete user.role_id;
-      return {
+      return  {
         ...user,
         token
       };

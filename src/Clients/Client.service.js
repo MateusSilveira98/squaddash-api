@@ -13,6 +13,7 @@ module.exports = {
   },
   async edit(param) {
     try {
+      param.updated_at = Date.now();
       const client = await ClientRepository.getById(param.id);
       if (!client) throw 'cliente não encontrado! :(';
       delete client.employees;

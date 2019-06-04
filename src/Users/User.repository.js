@@ -20,8 +20,7 @@ module.exports = {
     return result[0];
   },
   async getByEmail(email) {
-    const result = await knex.columns(['users.*', 'roles.type']).from('users')
-      .innerJoin('roles', 'role_id', 'roles.id')
+    const result = await knex('users')
       .where('users.email', email)
       .andWhere('users.deleted', false);
     return result[0];

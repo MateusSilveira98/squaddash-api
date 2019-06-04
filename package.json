@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/MateusSilveira98/squaddash-api.git"
   },
-  "author": "Mateus da Silveira COsta",
+  "author": "Mateus da Silveira Costa",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MateusSilveira98/squaddash-api/issues"
@@ -19,7 +19,6 @@
   "homepage": "https://github.com/MateusSilveira98/squaddash-api#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "bookshelf": "^0.14.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.16.4",
@@ -30,7 +29,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "nodemon": "^1.18.11",
-    "pg": "^7.10.0",
+    "pg": "^7.11.0",
     "sqlite3": "^4.0.6"
   }
 }

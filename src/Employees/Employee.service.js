@@ -13,6 +13,7 @@ module.exports = {
   },
   async edit(param) {
     try {
+      param.updated_at = Date.now();
       const employee = await EmployeeRepository.getById(param.id);
       if (!employee) throw 'funcionário não encontrado! :(';
       delete employee.employees;

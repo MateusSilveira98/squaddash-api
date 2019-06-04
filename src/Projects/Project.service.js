@@ -14,6 +14,7 @@ module.exports = {
   },
   async edit(param) {
     try {
+      param.updated_at = Date.now();
       const project = await ProjectRepository.getById(param.id);
       if (!project) throw 'projeto não encontrado! :(';
       Object.assign(project, param);

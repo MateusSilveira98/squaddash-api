@@ -9,7 +9,7 @@ module.exports = {
   },
   async getAll() {
     const result = await knex('clients').where('deleted', false).orderBy('name');
-    return result[0]
+    return result
   },
   async getById(id) {
     const result = await knex('clients').where('id', id).andWhere('deleted', false);

@@ -28,6 +28,7 @@ module.exports = {
       await SquadRepository.edit(squad);
       return Callbacks.callbackHandler('success', 'squad alterado com sucesso! :)')
     } catch (error) {
+      console.log(error)
       return Callbacks.callbackHandler('error', error || 'falha ao alterar o squad! :(')
     }
   },

@@ -1,5 +1,6 @@
 const ClientRepository = require('./Client.repository');
 const Callbacks = require('../_Helpers/Callbacks');
+const Dates = require('../_Helpers/FormatDate');
 module.exports = {
   async create(param) {
     try {
@@ -13,7 +14,7 @@ module.exports = {
   },
   async edit(param) {
     try {
-      param.updated_at = Date.now();
+      param.updated_at = Dates.formatDate(Date.now());
       const client = await ClientRepository.getById(param.id);
       if (!client) throw 'cliente não encontrado! :(';
       delete client.employees;

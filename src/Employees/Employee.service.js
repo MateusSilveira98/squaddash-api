@@ -1,5 +1,7 @@
 const EmployeeRepository = require('./Employee.repository');
 const Callbacks = require('../_Helpers/Callbacks');
+const Dates = require('../_Helpers/FormatDate');
+
 module.exports = {
   async create(param) {
     try {
@@ -8,12 +10,13 @@ module.exports = {
       await EmployeeRepository.create(param);
       return Callbacks.callbackHandler('success', 'funcionário criado com sucesso! :)')
     } catch (error) {
+      console.log(error)
       return Callbacks.callbackHandler('error', error || 'falha ao criar o funcionário! :(')
     }
   },
   async edit(param) {
     try {
-      param.updated_at = Date.now();
+      param.updated_at = Dates.formatDate(Date.now());
       const employee = await EmployeeRepository.getById(param.id);
       if (!employee) throw 'funcionário não encontrado! :(';
       delete employee.employees;

@@ -3,6 +3,7 @@ const Callbacks = require('../_Helpers/Callbacks');
 const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Dates = require('../_Helpers/FormatDate');
 const create = async (param) => {
   try {
     const user = await UserRepository.getByEmail(param.email);
@@ -11,20 +12,19 @@ const create = async (param) => {
     await UserRepository.create(param);
     return Callbacks.callbackHandler('success', 'usuário criado com sucesso! :)')
   } catch (error) {
-    console.log(error)
     return Callbacks.callbackHandler('error', error || 'falha ao criar o usuário! :(')
   }
 }
 const edit = async (param) => {
   try {
-    param.updated_at = Date.now();
+    param.updated_at = Dates.formatDate(Date.now());
     const user = await UserRepository.getById(param.id);
     if(!user) throw 'usuário não encontrado! :(';
     if (param.password)
       param.password = bcrypt.hashSync(param.password, 10);
     Object.assign(user, param);
-    await UserRepository.edit(user);
-    return Callbacks.callbackHandler('success', 'usuário alterado com sucesso! :)')
+    let userModified = await UserRepository.edit(user);
+    return Callbacks.callbackHandler('success', 'usuário alterado com sucesso! :)', userModified[0])
   } catch (error) {
     return Callbacks.callbackHandler('error', error || 'falha ao alterar o usuário! :(')
   }

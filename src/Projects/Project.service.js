@@ -1,5 +1,6 @@
 const ProjectRepository = require('./Project.repository');
 const Callbacks = require('../_Helpers/Callbacks');
+const Dates = require('../_Helpers/FormatDate');
 
 module.exports = {
   async create(param) {
@@ -14,7 +15,7 @@ module.exports = {
   },
   async edit(param) {
     try {
-      param.updated_at = Date.now();
+      param.updated_at = Dates.formatDate(Date.now());
       const project = await ProjectRepository.getById(param.id);
       if (!project) throw 'projeto não encontrado! :(';
       Object.assign(project, param);

@@ -5,7 +5,7 @@ module.exports = {
     return await knex('users').insert(user);
   },
   async edit(user) {
-    return await knex('users').where('id', user.id).update(user);
+    return await knex('users').where('id', user.id).update(user).returning(Object.keys(user).map(prop => prop));
   },
   async getAll(id) {
     return await knex('users')

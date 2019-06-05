@@ -21,6 +21,9 @@ module.exports = {
       Object.assign(project, param);
       delete project.client;
       delete project.squad;
+      delete project.balance;
+      delete project.cost;
+      delete project.dev;
       await ProjectRepository.edit(project);
       return Callbacks.callbackHandler('success', 'project alterado com sucesso! :)')
     } catch (error) {

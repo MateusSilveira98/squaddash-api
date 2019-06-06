@@ -30,9 +30,14 @@ module.exports = {
         let employee = await knex('employees')
         .where('id', employee_ids[j])
         .andWhere('deleted', false);
-        let beginDate = moment(projects[i].begin_date).startOf('month').month() + 1;
-        let finishDate = moment(projects[i].finish_date).endOf('month').month() + 1;
-        let cost = Number(employee[0].salary) * (finishDate - beginDate) == 0 ? Number(employee[0].salary) : Number(employee[0].salary) * (finishDate - beginDate);
+        let beginYear = moment(projects[i].begin_date).year();
+        let beginMonth = moment(projects[i].begin_date).month();
+        let beginDay = moment(projects[i].begin_date).day();
+        let finishYear = moment(projects[i].finish_date).year();
+        let finishMonth = moment(projects[i].finish_date).month();
+        let finishDay = moment(projects[i].finish_date).day();
+        let date = Math.round(moment([finishYear, finishMonth, finishDay]).diff(moment([beginYear, beginMonth, beginDay]), 'months', true));
+        let cost = Number(employee[0].salary) * date == 0 ? Number(employee[0].salary) : Number(employee[0].salary) * date;
         projects[i].cost = projects[i].cost + cost;
       }
       projects[i].balance = projects[i].gains - projects[i].cost;

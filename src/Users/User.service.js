@@ -12,6 +12,7 @@ const create = async (param) => {
     await UserRepository.create(param);
     return Callbacks.callbackHandler('success', 'usuário criado com sucesso! :)')
   } catch (error) {
+    console.log('USER CREATE', error)
     return Callbacks.callbackHandler('error', error || 'falha ao criar o usuário! :(')
   }
 }

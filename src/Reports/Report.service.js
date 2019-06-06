@@ -38,11 +38,11 @@ const getEmployees = async () => await EmployeeService.getAll();
 const getClients = async () => await ClientService.getAll();
 const getProjects = async () => await ProjectService.getAll();
 
-const squadsMoreExpensive = (squads) => _.sortBy(squads, 'cost', 'asc');
-const squadsMoreCheap = (squads) => _.sortBy(squads, 'cost', 'desc');
-const clientsCreatedRecently = (clients) => _.sortBy(clients, 'created_at', 'asc');
-const projectsHigherBalance = (projects) => _.sortBy(projects, 'balance', 'asc');
-const projectsLowerBalance = (projects) => _.sortBy(projects, 'balance', 'desc');
+const squadsMoreExpensive = (squads) => _.orderBy(squads, ['cost'], ['desc']);
+const squadsMoreCheap = (squads) => _.orderBy(squads, ['cost'], ['asc']);
+const clientsCreatedRecently = (clients) => _.orderBy(clients, ['created_at'], ['desc']);
+const projectsHigherBalance = (projects) => _.orderBy(projects, ['balance'], ['desc']);
+const projectsLowerBalance = (projects) => _.orderBy(projects, ['balance'], ['asc']);
 const employeesOnline = (employees) => employees.filter(employee => employee.status);
 const employeesOffline = (employees) => employees.filter(employee => !employee.status);
 const getGainsPerProject = (projects) => projects.map(project => +project.gains).reduce((acumulator, current) => acumulator + current);
@@ -55,17 +55,17 @@ module.exports = {
       let employees = await getEmployees();
       let clients = await getClients();
       let projects = await getProjects();
-      ReportModel.clients.createdRecently = clientsCreatedRecently(clients);
-      ReportModel.employees.online = employeesOnline(employees);
-      ReportModel.employees.offline = employeesOffline(employees);
-      ReportModel.projects.higherBalance = projectsHigherBalance(projects);
-      ReportModel.projects.lowerBalance = projectsLowerBalance(projects);
-      ReportModel.squads.moreCheap = squadsMoreCheap(squads);
-      ReportModel.squads.moreExpensive = squadsMoreExpensive(squads);
+      ReportModel.clients.createdRecently = clientsCreatedRecently(clients).slice(0, 5);
+      ReportModel.employees.online = employeesOnline(employees).slice(0, 5);
+      ReportModel.employees.offline = employeesOffline(employees).slice(0, 5);
+      ReportModel.projects.higherBalance = projectsHigherBalance(projects).slice(0, 5);
+      ReportModel.projects.lowerBalance = projectsLowerBalance(projects).slice(0, 5);
+      ReportModel.squads.moreCheap = squadsMoreCheap(squads).slice(0, 5);
+      ReportModel.squads.moreExpensive = squadsMoreExpensive(squads).slice(0, 5);
       ReportModel.currency.gains = getGainsPerProject(projects);
       ReportModel.currency.costs = getCostPerProject(projects);
       ReportModel.currency.balance = getBalance(ReportModel.currency.gains, ReportModel.currency.costs);
-      console.log(ReportModel)
+      // console.log(ReportModel)
       return ReportModel
     } catch (error) {
       console.log(error)

@@ -24,6 +24,7 @@ module.exports = {
       delete project.balance;
       delete project.cost;
       delete project.dev;
+      delete project.monthlyCost;
       await ProjectRepository.edit(project);
       return Callbacks.callbackHandler('success', 'project alterado com sucesso! :)')
     } catch (error) {

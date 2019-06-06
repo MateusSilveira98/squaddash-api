@@ -24,10 +24,12 @@ const ReportModel = {
   },
   projects: {
     higherBalance: [],
-    lowerBalance: [],
-    monthlyGains: [],
-    monthlyCosts: [],
-    monthlyBalance: []
+    lowerBalance: []
+  },
+  currency: {
+    gains: 0,
+    balance: 0,
+    costs: 0
   }
 }
 
@@ -39,11 +41,13 @@ const getProjects = async () => await ProjectService.getAll();
 const squadsMoreExpensive = (squads) => _.sortBy(squads, 'cost', 'asc');
 const squadsMoreCheap = (squads) => _.sortBy(squads, 'cost', 'desc');
 const clientsCreatedRecently = (clients) => _.sortBy(clients, 'created_at', 'asc');
-const employeesOnline = (employees) => employees.filter(employee => employee.status);
-const employeesOffline = (employees) => employees.filter(employee => !employee.status);
 const projectsHigherBalance = (projects) => _.sortBy(projects, 'balance', 'asc');
 const projectsLowerBalance = (projects) => _.sortBy(projects, 'balance', 'desc');
-
+const employeesOnline = (employees) => employees.filter(employee => employee.status);
+const employeesOffline = (employees) => employees.filter(employee => !employee.status);
+const getGainsPerProject = (projects) => projects.map(project => +project.gains).reduce((acumulator, current) => acumulator + current);
+const getCostPerProject = (projects) => projects.map(project => +project.cost).reduce((acumulator, current) => acumulator + current);
+const getBalance = (gains, costs) => gains - costs;
 module.exports = {
   async getAll() {
     try {
@@ -58,6 +62,9 @@ module.exports = {
       ReportModel.projects.lowerBalance = projectsLowerBalance(projects);
       ReportModel.squads.moreCheap = squadsMoreCheap(squads);
       ReportModel.squads.moreExpensive = squadsMoreExpensive(squads);
+      ReportModel.currency.gains = getGainsPerProject(projects);
+      ReportModel.currency.costs = getCostPerProject(projects);
+      ReportModel.currency.balance = getBalance(ReportModel.currency.gains, ReportModel.currency.costs);
       console.log(ReportModel)
       return ReportModel
     } catch (error) {

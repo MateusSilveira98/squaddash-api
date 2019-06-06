@@ -6,11 +6,12 @@ const SquadRoutes = require('./Squads/Squad.routes');
 const EmployeeRoutes = require('./Employees/Employee.routes');
 const UserRoutes = require('./Users/User.routes');
 const ProjectRoutes = require('./Projects/Project.routes');
-
+const ReportRoutes = require('./Reports/Report.routes');
 routes.use(ClientRoutes);
 routes.use(SquadRoutes);
 routes.use(EmployeeRoutes);
 routes.use(UserRoutes);
 routes.use(ProjectRoutes);
+routes.use(ReportRoutes);
 
 module.exports = routes;

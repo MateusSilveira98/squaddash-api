@@ -1,5 +1,5 @@
 exports.up = (knex, Promise) => {
-  const schema = knex.schema.createTable('users', (table) => {
+  return knex.schema.createTable('users', (table) => {
     table.increments('id').primary();
     table.string('name');
     table.string('email');
@@ -10,15 +10,6 @@ exports.up = (knex, Promise) => {
     table.boolean('deleted').defaultTo(false);
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
-  });
-  return knex.schema.hasTable('users').then((exists) => {
-    if (!exists) {
-      return schema
-    } else {
-      return knex.schema.dropTable('users').then(() => {
-        return schema
-      });
-    }
   });
 }
 exports.down = (knex, Promise) => {

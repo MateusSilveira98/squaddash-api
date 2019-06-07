@@ -4,7 +4,7 @@ const app = express();
 const server = require('http').Server(app);
 const Callbacks = require('./_Helpers/Callbacks');
 const JWT = require('./_Helpers/JWT');
-const Routes = require('./Routes');
+const Routes = require('./routes');
 
 const corsOptions = {
   origins: '*',

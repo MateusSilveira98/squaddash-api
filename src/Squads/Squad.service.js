@@ -1,12 +1,7 @@
 const SquadRepository = require('./Squad.repository');
 const Callbacks = require('../_Helpers/Callbacks');
 const Dates = require('../_Helpers/FormatDate');
-const mountSquadCost = (squad) => {
-  squad.cost = squad.employees.length > 1 ?
-    squad.employees.map(item => Number(item.salary)).reduce((acumulator, current) => acumulator + current) :
-    Number(squad.employees[0].salary)
-  return squad
-}
+
 module.exports = {
   async create(param) {
     try {
@@ -34,10 +29,7 @@ module.exports = {
   },
   async getAll() {
     try {
-      let squads = await SquadRepository.getAll();
-      return squads.length > 0 ? squads.map(squad => {
-        return squad.employees.length > 0 ? mountSquadCost(squad) : squad;
-      }) : [];
+      return await SquadRepository.getAll();
     } catch (error) {
       return Callbacks.callbackHandler('error', error || 'falha ao buscar os squads')
     }

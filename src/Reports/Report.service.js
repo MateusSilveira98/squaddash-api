@@ -45,9 +45,12 @@ const projectsHigherBalance = (projects) => _.orderBy(projects, ['balance'], ['d
 const projectsLowerBalance = (projects) => _.orderBy(projects, ['balance'], ['asc']);
 const employeesOnline = (employees) => employees.filter(employee => employee.status);
 const employeesOffline = (employees) => employees.filter(employee => !employee.status);
-const getGainsPerProject = (projects) => projects.map(project => +project.gains).reduce((acumulator, current) => acumulator + current);
-const getCostPerProject = (projects) => projects.map(project => +project.cost).reduce((acumulator, current) => acumulator + current);
-const getBalance = (gains, costs) => gains - costs;
+const getGainsPerProject = (projects) => 0;
+const getCostPerProject = (projects) => 0;
+const getBalance = (gains, costs) => 0;
+// const getGainsPerProject = (projects) => projects.map(project => +project.gains).reduce((acumulator, current) => acumulator + current);
+// const getCostPerProject = (projects) => projects.map(project => +project.cost).reduce((acumulator, current) => acumulator + current);
+// const getBalance = (gains, costs) => gains - costs;
 module.exports = {
   async getAll() {
     try {
@@ -58,10 +61,14 @@ module.exports = {
       ReportModel.clients.createdRecently = clientsCreatedRecently(clients).slice(0, 5);
       ReportModel.employees.online = employeesOnline(employees).slice(0, 5);
       ReportModel.employees.offline = employeesOffline(employees).slice(0, 5);
-      ReportModel.projects.higherBalance = projectsHigherBalance(projects).slice(0, 5);
-      ReportModel.projects.lowerBalance = projectsLowerBalance(projects).slice(0, 5);
-      ReportModel.squads.moreCheap = squadsMoreCheap(squads).slice(0, 5);
-      ReportModel.squads.moreExpensive = squadsMoreExpensive(squads).slice(0, 5);
+      ReportModel.projects.higherBalance = [];
+      // ReportModel.projects.higherBalance = projectsHigherBalance(projects).slice(0, 5);
+      // ReportModel.projects.lowerBalance = projectsLowerBalance(projects).slice(0, 5);
+      ReportModel.projects.lowerBalance = [];
+      ReportModel.squads.moreCheap = [];
+      ReportModel.squads.moreExpensive = [];
+      // ReportModel.squads.moreCheap = squadsMoreCheap(squads).slice(0, 5);
+      // ReportModel.squads.moreExpensive = squadsMoreExpensive(squads).slice(0, 5);
       ReportModel.currency.gains = getGainsPerProject(projects);
       ReportModel.currency.costs = getCostPerProject(projects);
       ReportModel.currency.balance = getBalance(ReportModel.currency.gains, ReportModel.currency.costs);

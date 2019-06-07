@@ -15,7 +15,6 @@ module.exports = {
   async edit(squad) {
     let employees = squad.employees;
     delete squad.employees;
-    delete squad.cost;
     await knex('squads_employees')
       .where('squad_id', squad.id)
       .del();

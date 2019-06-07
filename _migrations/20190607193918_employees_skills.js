@@ -1,13 +1,13 @@
 
 exports.up = (knex, Promise) => {
-  return knex.schema.createTable('squads_employees', (table) => {
+  return knex.schema.createTable('employees_skills', (table) => {
     table.increments('id').primary();
-    table.integer('squad_id');
-    table.foreign('squad_id').references().inTable('squads');
+    table.integer('skill_id');
+    table.foreign('skill_id').references().inTable('skills');
     table.integer('employee_id');
     table.foreign('employee_id').references().inTable('employees');
   });
 }
 exports.down = (knex, Promise) => {
-  return knex.schema.dropTable('squads_employees');
+  return knex.schema.dropTable('employees_skills');
 };

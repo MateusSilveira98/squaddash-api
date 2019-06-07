@@ -1,8 +1,8 @@
 exports.up = (knex, Promise) => {
-  const schema = knex.schema.createTable('projects', (table) => {
+  return knex.schema.createTable('projects', (table) => {
     table.increments('id').primary();
     table.string('name');
-    table.decimal('gains', 10, 2);
+    table.decimal('revenue', 10, 2);
     table.timestamp('begin_date');
     table.timestamp('finish_date');
     table.integer('squad_id');
@@ -14,15 +14,7 @@ exports.up = (knex, Promise) => {
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
   });
-  return knex.schema.hasTable('projects').then((exists) => {
-    if (!exists) {
-      return schema
-    } else {
-      return knex.schema.dropTable('projects').then(() => {
-        return schema
-      });
-    }
-  });
+
 }
 exports.down = (knex, Promise) => {
   return knex.schema.dropTable('projects');

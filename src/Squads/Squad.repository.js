@@ -8,7 +8,7 @@ module.exports = {
     delete squad.employees;
     let squad_id = await knex('squads').insert(squad).returning('id');
     for (let i = 0; i < employees.length; i++) {
-      created = await knex('squads_employees').insert({ squad_id: squad_id[0], employee_id: employees[i].id }).returning(['id']);
+      created = await knex('squads_employees').insert({ squad_id: squad_id[0], employee_id: employees[i].id }).returning('id');
     }
     return created
   },
@@ -21,7 +21,7 @@ module.exports = {
     for (let i = 0; i < employees.length; i++) {
       await knex('squads_employees').insert({ squad_id: squad.id, employee_id: employees[i].id });
     }
-    return await knex('squads').where('id', squad.id).update(squad);
+    return await knex('squads').where('id', squad.id).update(squad).returning('id');
   },
   async getAll() {
     let squads = await knex('squads')

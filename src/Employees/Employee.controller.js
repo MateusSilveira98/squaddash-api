@@ -2,7 +2,7 @@ const EmployeeService = require('./Employee.service');
 const Callbacks = require('../_Helpers/Callbacks');
 const Tools = require('../_Helpers/Tools');
 
-const requiredFields = [
+const requiredFieldsToCreate = [
   {
     name: 'name',
     label: 'nome'
@@ -20,7 +20,7 @@ const requiredFields = [
     label: 'habilidades'
   }
 ];
-const notRequiredFields = [
+const notRequiredFieldsToCreate = [
   'image',
   'status',
   'created_at',
@@ -28,11 +28,40 @@ const notRequiredFields = [
   'id',
   'deleted'
 ];
+const requiredFieldsToEdit = [
+  {
+    name: 'name',
+    label: 'nome'
+  },
+  {
+    name: 'email',
+    label: 'email'
+  },
+  {
+    name: 'modality_of_contracting',
+    label: 'regime de contratação'
+  },
+  {
+    name: 'skills',
+    label: 'habilidades'
+  },
+  {
+    name: 'id',
+    label: 'id'
+  }
+];
+const notRequiredFieldsToEdit = [
+  'image',
+  'status',
+  'created_at',
+  'updated_at',
+  'deleted'
+];
 
 module.exports = {
   async create(req, res) {
     try {
-      let fields = Tools.validateFields(req.body, requiredFields, notRequiredFields);
+      let fields = Tools.validateFields(req.body, requiredFieldsToCreate, notRequiredFieldsToCreate);
       if (fields.length == 0) {
         const created = await EmployeeService.create(req.body)
         if (created.length > 0) return res.json(Callbacks.callbackHandler('success', 'pessoa criada com sucesso! :)'));
@@ -45,7 +74,7 @@ module.exports = {
   },
   async edit(req, res) {
     try {
-      let fields = Tools.validateFields(req.body, requiredFields, notRequiredFields);
+      let fields = Tools.validateFields(req.body, requiredFieldsToEdit, notRequiredFieldsToEdit);
       if(fields.length == 0) {
         const updated = await EmployeeService.edit(req.body)
         if (updated.length > 0)

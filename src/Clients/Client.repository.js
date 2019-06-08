@@ -2,10 +2,10 @@ const knexConfig = require('../../knexfile').development;
 const knex = require('knex')(knexConfig);
 module.exports = {
   async create(client) {
-    return await knex('clients').insert(client);
+    return await knex('clients').insert(client).returning('id');
   },
   async edit(client) {
-    return await knex('clients').where('id', client.id).update(client);
+    return await knex('clients').where('id', client.id).update(client).returning('id');
   },
   async getAll() {
     const result = await knex('clients').where('deleted', false).orderBy('name');

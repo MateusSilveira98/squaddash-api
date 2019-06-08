@@ -1,12 +1,11 @@
 const knexConfig = require('../../knexfile').development;
 const knex = require('knex')(knexConfig);
-const moment = require('moment');
 module.exports = {
   async create(project) {
-    return await knex('projects').insert(project);
+    return await knex('projects').insert(project).returning('id');
   },
   async edit(project) {
-    return await knex('projects').where('id', project.id).update(project);
+    return await knex('projects').where('id', project.id).update(project).returning('id');
   },
   async getAll() {
     let projects = await knex('projects')

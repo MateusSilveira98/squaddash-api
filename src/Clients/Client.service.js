@@ -1,44 +1,24 @@
 const ClientRepository = require('./Client.repository');
-const Callbacks = require('../_Helpers/Callbacks');
 const Tools = require('../_Helpers/Tools');
 module.exports = {
   async create(param) {
-    try {
-      const client = await ClientRepository.getByName(param.name);
-      if (client) throw 'este client já está criado! :(';
-      await ClientRepository.create(param);
-      return Callbacks.callbackHandler('success', 'cliente criado com sucesso! :)')
-    } catch (error) {
-      return Callbacks.callbackHandler('error', error || 'falha ao criar o cliente! :(')
-    }
+    const client = await ClientRepository.getByName(param.name);
+    if (client) throw 'este client já está criado! :(';
+    return await ClientRepository.create(param);
   },
   async edit(param) {
-    try {
-      param.updated_at = Tools.formatDate(Date.now());
-      const client = await ClientRepository.getById(param.id);
-      if (!client) throw 'cliente não encontrado! :(';
-      delete client.employees;
-      Object.assign(client, param);
-      await ClientRepository.edit(client);
-      return Callbacks.callbackHandler('success', 'cliente alterado com sucesso! :)')
-    } catch (error) {
-      return Callbacks.callbackHandler('error', error || 'falha ao alterar o cliente! :(')
-    }
+    param.updated_at = Tools.formatDate(Date.now());
+    const client = await ClientRepository.getById(param.id);
+    if (!client) throw 'cliente não encontrado! :(';
+    Object.assign(client, param);
+    return await ClientRepository.edit(client);
   },
   async getAll() {
-    try {
-      return await ClientRepository.getAll();
-    } catch(error) {
-      return Callbacks.callbackHandler('error', error  || 'falha ao buscar os clientes')
-    }
+    return await ClientRepository.getAll();
   },
   async getById(id) {
-    try {
-      const client = await ClientRepository.getById(id);
-      if(!client) throw 'cliente não encontrado! :(';
-      return client
-    } catch (error) {
-      return Callbacks.callbackHandler('error', error || 'falha ao buscar o cliente')
-    }
+    const client = await ClientRepository.getById(id);
+    if (!client) throw 'cliente não encontrado! :(';
+    return client
   }
 }

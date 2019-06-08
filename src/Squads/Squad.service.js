@@ -1,5 +1,4 @@
 const SquadRepository = require('./Squad.repository');
-const Callbacks = require('../_Helpers/Callbacks');
 const Tools = require('../_Helpers/Tools');
 
 module.exports = {

@@ -1,5 +1,6 @@
 const EmployeeService = require('./Employee.service');
 const Callbacks = require('../_Helpers/Callbacks');
+const Tools = require('../_Helpers/Tools');
 
 const requiredFields = [
   {
@@ -19,18 +20,19 @@ const requiredFields = [
     label: 'habilidades'
   }
 ];
-let fields = [];
-const validateFields = (body) => {
-  Object.keys(body).forEach(prop => {
-    let field = requiredFields.find(field => field.name == prop);
-    if(!field)
-      fields.push(field.label);
-  });
-}
+const notRequiredFields = [
+  'image',
+  'status',
+  'created_at',
+  'updated_at',
+  'id',
+  'deleted'
+];
+
 module.exports = {
   async create(req, res) {
     try {
-      validateFields(req.body);
+      let fields = Tools.validateFields(req.body, requiredFields, notRequiredFields);
       if (fields.length == 0) {
         const created = await EmployeeService.create(req.body)
         if (created.length > 0) return res.json(Callbacks.callbackHandler('success', 'pessoa criada com sucesso! :)'));
@@ -42,15 +44,35 @@ module.exports = {
     }
   },
   async edit(req, res) {
-    const updated = await EmployeeService.edit(req.body)
-    return res.json(updated);
+    try {
+      let fields = Tools.validateFields(req.body, requiredFields, notRequiredFields);
+      if(fields.length == 0) {
+        const updated = await EmployeeService.edit(req.body)
+        if (updated.length > 0)
+          return res.json(Callbacks.callbackHandler('success', 'pessoa alterada com sucesso! :)'))
+        else throw 'falha ao editar uma pessoa!'
+      } else throw fields.length > 1 ? `Campos: ${fields.map(field => field).join('; ')} são obrigatórios` : `campo: ${fields[0]} é obrigatório`
+    } catch (error) {
+      console.log(error);
+      return res.json(Callbacks.callbackHandler('error', error || 'falha ao alterar a pessoa! :('))
+    }
   },
   async getAll(req, res) {
-    const employees = await EmployeeService.getAll();
-    return res.json(employees);
+    try {
+      const employees = await EmployeeService.getAll();
+      return res.json(employees);
+    } catch (error) {
+      console.log(error);
+      return res.json(Callbacks.callbackHandler('error', error || 'falha ao buscar as pessoas! :('))
+    }
   },
   async getById(req, res) {
-    const employee = await EmployeeService.getById(req.params.id);
-    return res.json(employee);
+    try {
+      const employee = await EmployeeService.getById(req.params.id);
+      return res.json(employee);
+    } catch (error) {
+      console.log(error);
+      return res.json(Callbacks.callbackHandler('error', error || 'falha ao buscar a pessoa'))
+    }
   }
 };

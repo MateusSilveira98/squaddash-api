@@ -1,6 +1,6 @@
 const SquadRepository = require('./Squad.repository');
 const Callbacks = require('../_Helpers/Callbacks');
-const Dates = require('../_Helpers/FormatDate');
+const Tools = require('../_Helpers/Tools');
 
 module.exports = {
   async create(param) {
@@ -16,7 +16,7 @@ module.exports = {
   },
   async edit(param) {
     try {
-      param.updated_at = Dates.formatDate(Date.now());
+      param.updated_at = Tools.formatDate(Date.now());
       const squad = await SquadRepository.getById(param.id);
       if (!squad) throw 'squad não encontrado! :(';
       Object.assign(squad, param);

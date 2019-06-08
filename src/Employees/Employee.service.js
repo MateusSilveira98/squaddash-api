@@ -1,6 +1,5 @@
 const EmployeeRepository = require('./Employee.repository');
-const Callbacks = require('../_Helpers/Callbacks');
-const Dates = require('../_Helpers/FormatDate');
+const Tools = require('../_Helpers/Tools');
 
 module.exports = {
   async create(param) {
@@ -9,34 +8,18 @@ module.exports = {
     return await EmployeeRepository.create(param);
   },
   async edit(param) {
-    try {
-      param.updated_at = Dates.formatDate(Date.now());
-      const employee = await EmployeeRepository.getById(param.id);
-      if (!employee) throw 'pessoa não encontrada! :(';
-      Object.assign(employee, param);
-      await EmployeeRepository.edit(employee);
-      return Callbacks.callbackHandler('success', 'pessoa alterada com sucesso! :)')
-    } catch (error) {
-      console.log(error);
-      return Callbacks.callbackHandler('error', error || 'falha ao alterar a pessoa! :(')
-    }
+    param.updated_at = Tools.formatDate(Date.now());
+    const employee = await EmployeeRepository.getById(param.id);
+    if (!employee) throw 'pessoa não encontrada! :(';
+    Object.assign(employee, param);
+    return await EmployeeRepository.edit(employee);
   },
   async getAll() {
-    try {
-      return await EmployeeRepository.getAll();
-    } catch (error) {
-      console.log(error);
-      return Callbacks.callbackHandler('error', error || 'falha ao buscar as pessoas')
-    }
+    return await EmployeeRepository.getAll();
   },
   async getById(id) {
-    try {
-      const employee = await EmployeeRepository.getById(id);
-      if (!employee) throw 'pessoa não encontrada! :(';
-      return employee
-    } catch (error) {
-      console.log(error);
-      return Callbacks.callbackHandler('error', error || 'falha ao buscar a pessoa')
-    }
+    const employee = await EmployeeRepository.getById(id);
+    if (!employee) throw 'pessoa não encontrada! :(';
+    return employee
   }
 }

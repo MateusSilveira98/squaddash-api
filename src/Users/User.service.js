@@ -3,7 +3,7 @@ const Callbacks = require('../_Helpers/Callbacks');
 const config = require('../config.json');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Dates = require('../_Helpers/FormatDate');
+const Tools = require('../_Helpers/Tools');
 const create = async (param) => {
   try {
     const user = await UserRepository.getByEmail(param.email);
@@ -18,7 +18,7 @@ const create = async (param) => {
 }
 const edit = async (param) => {
   try {
-    param.updated_at = Dates.formatDate(Date.now());
+    param.updated_at = Tools.formatDate(Date.now());
     const user = await UserRepository.getById(param.id);
     if(!user) throw 'usuário não encontrado! :(';
     if (param.password)

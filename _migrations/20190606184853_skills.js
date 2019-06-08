@@ -2,7 +2,7 @@
 exports.up = (knex, Promise) => {
     return knex.schema.createTable('skills', (table) => {
       table.increments('id').primary();
-      table.string('skill');
+      table.string('name');
       table.boolean('status').defaultTo(true);
     });
   }

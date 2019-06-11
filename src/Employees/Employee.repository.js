@@ -59,5 +59,19 @@ module.exports = {
   async getByName(name) {
     const result = await knex('employees').where('name', name).andWhere('deleted', false);
     return result[0]
+  },
+  async getAllEmployeesInSquads() {
+    let employees = await knex('employees')
+      .where('deleted', false)
+    for (let i = 0; i < employees.length; i++) {
+      let squadsids = await knex('squads_employees').where('employee_id', employees[i].id);
+      employees[i].squads = [];
+      for(let j = 0; j < squadsids.length; j++) {
+        let squad = await knex('squads').where('id', squadsids[j].squad_id).andWhere('deleted', false);
+        employees[i].squads.push(squad);
+      }
+      employees[i].quantity = employees[i].squads.length;
+    }
+    return employees
   }
 }

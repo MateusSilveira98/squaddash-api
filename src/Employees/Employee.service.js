@@ -21,5 +21,8 @@ module.exports = {
     const employee = await EmployeeRepository.getById(id);
     if (!employee) throw 'pessoa não encontrada! :(';
     return employee
+  },
+  async getAllEmployeesInSquads() {
+    return await EmployeeRepository.getAllEmployeesInSquads();
   }
 }

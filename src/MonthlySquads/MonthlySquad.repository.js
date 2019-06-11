@@ -13,6 +13,15 @@ module.exports = {
     for (let i = 0; i < monthlysquads.length; i++) {
       let squad = await knex('squads').where('id', monthlysquads[i].squad_id);
       monthlysquads[i].squad = squad[0];
+      monthlysquads[i].squad.employees = [];
+      let squadsemployees = await knex('squads_employees').where('squad_id',monthlysquads[i].squad.id);
+      let employee_ids = squadsemployees.map(item => item.employee_id);
+      for (let j = 0; j < employee_ids.length; j++) {
+        let employee = await knex('employees')
+          .where('id', employee_ids[j])
+          .andWhere('deleted', false);
+          monthlysquads[i].squad.employees.push(employee[0])
+      }
     }
     return monthlysquads
   },
@@ -25,10 +34,10 @@ module.exports = {
   },
   async getBySquadId(param) {
     const result = await knex('monthly_squads')
-    .where('squad_id', param.squad_id)
-    .andWhere('month', param.month)
-    .andWhere('year', param.year)
-    .andWhere('deleted', false);
+      .where('squad_id', param.squad_id)
+      .andWhere('month', param.month)
+      .andWhere('year', param.year)
+      .andWhere('deleted', false);
     return result[0]
   }
 }

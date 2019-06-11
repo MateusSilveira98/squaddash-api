@@ -27,7 +27,7 @@ module.exports = {
   async getCostByYear(year) {
     let monthlySquads = await getMonthlySquads();
     monthlySquads = filterMonthlySquads(monthlySquads, year);
-    let costs = getMonthlyCosts(monthlySquads);
+    let costs = monthlySquads.length > 0 ? getMonthlyCosts(monthlySquads) : 0;
     return costs
   }
 }
